@@ -7,7 +7,7 @@
   <button @click="start" :disabled="isPlaying" class="play">Play</button>
   <Results v-if="isDone" :time="time" />
   <hr />
-  <Block v-if="showBlock" @block-click="stopTimer" :delay="delay" />
+  <Block v-if="isPlaying" @block-click="end" :delay="delay" />
 </template>
 
 <script>
@@ -19,11 +19,9 @@ export default {
   data() {
     return {
       isPlaying: false,
-      showBlock: false,
-      time: null,
-      timer: null,
       isDone: false,
       delay: null,
+      time: null,
     };
   },
   methods: {
@@ -31,22 +29,11 @@ export default {
       this.delay = 2000 + Math.floor(Math.random() * 6000);
       this.isPlaying = true;
       this.isDone = false;
-      this.time = 0;
-      setTimeout(() => {
-        this.showBlock = true;
-        this.startTimer();
-      }, this.delay);
     },
-    startTimer() {
-      this.timer = setInterval(() => {
-        this.time++;
-      }, 1);
-    },
-    stopTimer() {
-      clearInterval(this.timer);
-      this.isDone = true;
-      this.showBlock = false;
+    end(time) {
+      this.time = time;
       this.isPlaying = false;
+      this.isDone = true;
     },
   },
   components: {

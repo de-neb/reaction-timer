@@ -1,6 +1,6 @@
 <template>
-  <div class="block-cont">
-    <div class="block" @click="blockClick" :class="generatePosition()">
+  <div class="block-cont" v-if="showBlock">
+    <div class="block" @click="stopTimer" :class="generatePosition()">
       <h1>CLICK ME</h1>
     </div>
   </div>
@@ -11,6 +11,9 @@ export default {
   props: ["delay"],
   data() {
     return {
+      time: null,
+      timer: null,
+      showBlock: false,
       position: [
         "top-right",
         "top-left",
@@ -21,19 +24,31 @@ export default {
         "middle",
         "middle-left",
         "middle-right",
-      ]
+      ],
     };
   },
   methods: {
-    blockClick() {
-      this.$emit("block-click");
-    },
     generatePosition() {
       let pos = Math.floor(Math.random() * this.position.length);
       console.log(this.position[pos]);
       return this.position[pos];
     },
-  }
+    startTimer() {
+      this.timer = setInterval(() => {
+        this.time++;
+      }, 1);
+    },
+    stopTimer() {
+      clearInterval(this.timer);
+      this.$emit("block-click",this.time);
+    },
+  },
+  mounted() {
+    setTimeout(() => {
+      this.showBlock = true;
+      this.startTimer();
+    }, this.delay);
+  },
 };
 </script>
 
