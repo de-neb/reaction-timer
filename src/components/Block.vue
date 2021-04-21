@@ -30,7 +30,6 @@ export default {
   methods: {
     generatePosition() {
       let pos = Math.floor(Math.random() * this.position.length);
-      console.log(this.position[pos]);
       return this.position[pos];
     },
     startTimer() {
@@ -40,7 +39,7 @@ export default {
     },
     stopTimer() {
       clearInterval(this.timer);
-      this.$emit("block-click",this.time);
+      this.$emit("block-click", this.time);
     },
   },
   mounted() {
